@@ -42,11 +42,6 @@ async def callback(
 def handle_message(event):
     message_text = event.message.text.lower()
 
-    if "おはよう" in message_text:
+    if message_text == "おはよう":
         reply = TextSendMessage(text="おはよう！")
-    elif "ありがとう" in message_text:
-        reply = TextSendMessage(text="こちらこそー")
-    else:
-        reply = TextSendMessage(text="いつも使ってくれてありがとう")
-
-    LINE_BOT_API.reply_message(event.reply_token, reply)
+        LINE_BOT_API.reply_message(event.reply_token, reply)
