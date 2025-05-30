@@ -28,10 +28,12 @@ async def callback(request: Request):
 
     for event in events:
         if isinstance(event, MessageEvent) and isinstance(event.message, TextMessage):
-            reply_text = f"あなたのメッセージ: {event.message.text}"
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=reply_text)
+            user_message = event.message.text.strip()
+            
+            if user_message == "おはよう":
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text="おはよう")
             )
 
     return {"status": "ok"}
@@ -43,3 +45,4 @@ async def callback(request: Request):
 # uvicorn main:app --host   
 #pip install fastapi uvicorn python-dotenv requests
 # pip install line-bot-sdk
+#uvicorn main:app --reload --port 8000
