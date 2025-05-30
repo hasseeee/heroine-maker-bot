@@ -6,13 +6,13 @@ from starlette.exceptions import HTTPException
 from dotenv import load_dotenv
 from fastapi.staticfiles import StaticFiles
 import os
+import random
 
 load_dotenv()
 
-
-app.mount("/static", StaticFiles(directory="static"), name="static")
-
 app = FastAPI()
+
+app.mount("/images", StaticFiles(directory="images"), name="images")    
 
 # 環境変数
 LINE_BOT_API = LineBotApi(os.environ["CHANNEL_ACCESS_TOKEN"])
@@ -47,4 +47,26 @@ def handle_message(event):
 
     if message_text == "おはよう":
         reply = TextSendMessage(text="おはよう！")
+        images_dir = os.path.join(os.path.dirname(__file__), "images")
+        
+        # 対象の画像拡張子
+        valid_extensions = (".jpg", ".jpeg", ".png", ".gif", ".webp")
+        
+        # 画像ファイルだけを抽出
+        image_files = [
+            f for f in os.listdir(images_dir)
+            if f.lower().endswith(valid_extensions)
+        ]
+
+        # ランダム選択
+        chosen_image = random.choice(image_files)
+
+        # 画像URL（RenderのURLに合わせて修正）
+        images_url = f"https://your-app-name.onrender.com/static/{chosen_image}"
+
+        image_msg = ImageSendMessage(
+            original_content_url=images_url,
+            preview_image_url=images_url
+        )
+
         LINE_BOT_API.reply_message(event.reply_token, reply)
