@@ -12,12 +12,14 @@ load_dotenv()
 
 app = FastAPI()
 
+#画像ディレクトリの公開
 app.mount("/images", StaticFiles(directory="images"), name="images")    
 
 # 環境変数
 LINE_BOT_API = LineBotApi(os.environ["CHANNEL_ACCESS_TOKEN"])
 handler = WebhookHandler(os.environ["CHANNEL_SECRET"])
 
+# ルート確認用エンドポイント
 @app.get("/")
 def read_root():
     return {"message": "LINE Bot is running"}
@@ -47,6 +49,7 @@ def handle_message(event):
 
     if message_text == "おはよう":
         reply = TextSendMessage(text="おはよう！")
+
         images_dir = os.path.join(os.path.dirname(__file__), "images")
         
         # 対象の画像拡張子
