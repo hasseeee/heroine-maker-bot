@@ -44,4 +44,9 @@ def handle_message(event):
 
     if message_text == "おはよう":
         reply = TextSendMessage(text="おはよう！")
-        LINE_BOT_API.reply_message(event.reply_token, reply)
+        try:
+            LINE_BOT_API.reply_message(event.reply_token, reply)
+        except Exception as e:
+            # ここでエラーをログに出力するなど、適切な処理を行u
+            print(f"返信メッセージの送信中にエラーが発生しました: {e}")
+            # エラー発生時でもLINE側に200 OKを返すために、基本的にはここで再送などを試みnai
