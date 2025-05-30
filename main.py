@@ -72,4 +72,5 @@ def handle_message(event):
             preview_image_url=image_url
         )
 
-        LINE_BOT_API.reply_message(event.reply_token, reply)
+        messages_to_send = [reply, image_msg]
+        LINE_BOT_API.reply_message(event.reply_token, messages_to_send)
