@@ -30,8 +30,8 @@ async def callback(request: Request):
 
 @handler.add(MessageEvent)
 def handle_message(event):
-    text = event.message.text.strip()
-    if text == "おはよう":
+    message_text = event.message.text.strip()
+    if "おはよう" in message_text:
         reply = TextSendMessage(text="おはよう")
         line_bot_api.reply_message(event.reply_token, reply)
 
