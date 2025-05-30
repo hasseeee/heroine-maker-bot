@@ -38,6 +38,7 @@ async def callback(request: Request):
 
 
 #仮想環境に入ってね：Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+# .\venv\Scripts\activate
 # uvicorn main:app --reload
 # uvicorn main:app --host   
 #pip install fastapi uvicorn python-dotenv requests
