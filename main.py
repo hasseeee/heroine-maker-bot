@@ -61,6 +61,13 @@ def handle_message(event):
             if f.lower().endswith(valid_extensions)
         ]
 
+        if not image_files:
+            print("エラー: 'images' ディレクトリに有効な画像ファイルが見つかりませんでした。")
+            # 画像なしでテキストメッセージのみを返信する
+            LINE_BOT_API.reply_message(event.reply_token, reply)
+            return # 以降の画像関連処理はスキップ
+
+
         # ランダム選択
         chosen_image = random.choice(image_files)
 
