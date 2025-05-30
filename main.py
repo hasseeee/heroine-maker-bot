@@ -57,7 +57,8 @@ def handle_message(event):
         
         # 画像ファイルだけを抽出
         image_files = [
-            f for f in os.listdir(images_dir)
+            f
+            for f in os.listdir(images_dir)
             if f.lower().endswith(valid_extensions)
         ]
 
