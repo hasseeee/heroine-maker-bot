@@ -62,11 +62,11 @@ def handle_message(event):
         chosen_image = random.choice(image_files)
 
         # 画像URL（RenderのURLに合わせて修正）
-        images_url = f"https://your-app-name.onrender.com/static/{chosen_image}"
+        image_url = f"https://heroine-maker-bot.onrender.com/images/{chosen_image}"
 
         image_msg = ImageSendMessage(
-            original_content_url=images_url,
-            preview_image_url=images_url
+            original_content_url=image_url,
+            preview_image_url=image_url
         )
 
         LINE_BOT_API.reply_message(event.reply_token, reply)
