@@ -1,13 +1,16 @@
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage
+from linebot.models import MessageEvent, TextMessage, TextSendMessage, ImageSendMessage
 from fastapi import FastAPI, Request, BackgroundTasks, Header
 from starlette.exceptions import HTTPException
 from dotenv import load_dotenv
+from fastapi.staticfiles import StaticFiles
 import os
 
 load_dotenv()
 
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app = FastAPI()
 
@@ -44,9 +47,4 @@ def handle_message(event):
 
     if message_text == "おはよう":
         reply = TextSendMessage(text="おはよう！")
-        try:
-            LINE_BOT_API.reply_message(event.reply_token, reply)
-        except Exception as e:
-            # ここでエラーをログに出力するなど、適切な処理を行u
-            print(f"返信メッセージの送信中にエラーが発生しました: {e}")
-            # エラー発生時でもLINE側に200 OKを返すために、基本的にはここで再送などを試みnai
+        LINE_BOT_API.reply_message(event.reply_token, reply)
