@@ -51,30 +51,15 @@ def handle_message(event):
     if message_text == "おはよう":
         reply = TextSendMessage(text="おはよう！")
 
-        images_dir = os.path.join(os.path.dirname(__file__), "images")
-        
-        # 対象の画像拡張子
-        valid_extensions = (".jpg", ".jpeg", ".png", ".gif", ".webp")
-        
-        # 画像ファイルだけを抽出
-        image_files = [
-            f # ファイル名
-            for f in os.listdir(images_dir) # フォルダ内の全ファイルに対して
-            if f.lower().endswith(valid_extensions) # 拡張子が画像なら
-        ]
+        base_url = "https://heroine-maker-bot.onrender.com"
 
-        if not image_files:
+        image_url = get_random_image_url(base_url)
+
+        if image_url is None:
             print("エラー: 'images' ディレクトリに有効な画像ファイルが見つかりませんでした。")
             # 画像なしでテキストメッセージのみを返信する
             LINE_BOT_API.reply_message(event.reply_token, reply)
             return # 以降の画像関連処理はスキップ
-
-
-        # ランダム選択
-        chosen_image = random.choice(image_files)
-
-        # 画像URL（RenderのURLに合わせて修正）
-        image_url = f"https://heroine-maker-bot.onrender.com/images/{chosen_image}"
 
         image_msg = ImageSendMessage(
             original_content_url=image_url,
