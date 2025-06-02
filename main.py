@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from fastapi.staticfiles import StaticFiles
 import os
 import random
-
+from image_utils import get_random_image_url
 
 load_dotenv()
 
