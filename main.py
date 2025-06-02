@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 import os
 import random
 
+
 load_dotenv()
 
 app = FastAPI()
