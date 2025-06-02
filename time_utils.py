@@ -19,6 +19,7 @@ def get_time_zone():
         return "夕方"
     else:
         return "夜"
+
     
 #時間帯に応じた返答
 def get_greeting_by_time_zone(time_zone: str):
