@@ -66,5 +66,12 @@ def handle_message(event):
             preview_image_url=image_url
         )
 
-        messages_to_send = [reply, image_msg]
+        messages_to_send = [image_msg, reply]
         LINE_BOT_API.reply_message(event.reply_token, messages_to_send)
+
+#仮想環境に入ってね：Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+# .\venv\Scripts\activate
+# uvicorn main:app --reload
+# uvicorn main:app --host   
+#pip install fastapi uvicorn python-dotenv requests
+# pip install line-bot-sdk
