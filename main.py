@@ -152,7 +152,7 @@ def handle_message(event):
     message_text = event.message.text.lower()
 
     if message_text == "おはよう":
-        reply = TextSendMessage(text="おはよう！")
+        greeting_message = TextSendMessage(text="おはよう！")
         
         target_city = "大阪"
         weather_info = scrape_weather_info(target_city)
@@ -173,7 +173,7 @@ def handle_message(event):
         if image_url is None:
             print("エラー: 'images' ディレクトリに有効な画像ファイルが見つかりませんでした。")
             # 画像なしでテキストメッセージのみを返信する
-            LINE_BOT_API.reply_message(event.reply_token, reply)
+            LINE_BOT_API.reply_message(event.reply_token, greeting_message)
             return # 以降の画像関連処理はスキップ
 
         image_msg = ImageSendMessage(
@@ -181,7 +181,7 @@ def handle_message(event):
             preview_image_url=image_url
         )
 
-        messages_to_send = [image_msg, reply, TextMessage]
+        messages_to_send = [image_msg, greeting_message, TextMessage]
         LINE_BOT_API.reply_message(event.reply_token, messages_to_send,)
 
 
