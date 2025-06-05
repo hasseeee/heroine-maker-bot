@@ -48,36 +48,6 @@ async def callback(
 
     return {"status": "ok"}
 
-# メッセージイベントの処理
-@handler.add(MessageEvent)
-def handle_message(event):
-    message_text = event.message.text.lower()
-
-    if message_text == "おはよう":
-        reply = TextSendMessage(text="おはよう！")
-        
-        weather_info = scrape_weather_info("大阪")
-        reply_text = f"今日の大阪の天気は{weather_info['weather']}です。最高気温は{weather_info['temperature']['max']}℃、最低気温は{weather_info['temperature']['min']}℃です。"
-        LINE_BOT_API.reply_message(event.reply_token, TextMessage(text=reply_text))
-
-        base_url = "https://heroine-maker-bot.onrender.com"
-
-        image_url = get_random_image_url(base_url)
-
-        if image_url is None:
-            print("エラー: 'images' ディレクトリに有効な画像ファイルが見つかりませんでした。")
-            # 画像なしでテキストメッセージのみを返信する
-            LINE_BOT_API.reply_message(event.reply_token, reply)
-            return # 以降の画像関連処理はスキップ
-
-        image_msg = ImageSendMessage(
-            original_content_url=image_url,
-            preview_image_url=image_url
-        )
-
-        messages_to_send = [image_msg, reply]
-        LINE_BOT_API.reply_message(event.reply_token, messages_to_send)
-
 
 def scrape_weather_info(city: str):
     """
@@ -174,6 +144,48 @@ def read_wether(date: Optional[str] = None, city: Optional[str] = None):
     weather_info["date"] = date
     
     return weather_info
+
+# メッセージイベントの処理
+@handler.add(MessageEvent)
+def handle_message(event):
+    message_text = event.message.text.lower()
+
+    if message_text == "おはよう":
+        reply = TextSendMessage(text="おはよう！")
+        
+        target_city = "大阪"
+        weather_info = scrape_weather_info(target_city)
+
+        reply_text = f"今日の大阪の天気は{weather_info['weather']}です。最高気温は{weather_info['temperature']['max']}℃、最低気温は{weather_info['temperature']['min']}℃です。"
+        
+        LINE_BOT_API.reply_message(event.reply_token, TextMessage(text=reply_text))
+         # エラーがあった場合
+        if "error" in weather_info:
+            reply_text = f"{target_city}の天気情報を取得できませんでした。"
+        else:
+            reply_text = f"今日の{target_city}の天気は{weather_info['weather']}です。最高気温は{weather_info['temperature']['max']}℃、最低気温は{weather_info['temperature']['min']}℃です。"
+            
+        LINE_BOT_API.reply_message(event.reply_token, TextMessage(text=reply_text))
+        
+        base_url = "https://heroine-maker-bot.onrender.com"
+
+        image_url = get_random_image_url(base_url)
+
+        if image_url is None:
+            print("エラー: 'images' ディレクトリに有効な画像ファイルが見つかりませんでした。")
+            # 画像なしでテキストメッセージのみを返信する
+            LINE_BOT_API.reply_message(event.reply_token, reply)
+            return # 以降の画像関連処理はスキップ
+
+        image_msg = ImageSendMessage(
+            original_content_url=image_url,
+            preview_image_url=image_url
+        )
+
+        messages_to_send = [image_msg, reply]
+        LINE_BOT_API.reply_message(event.reply_token, messages_to_send)
+
+
 #仮想環境に入ってね：Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 # .\venv\Scripts\activate
 # uvicorn main:app --reload
