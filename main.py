@@ -169,8 +169,6 @@ def handle_message(event):
 
         weather_message = TextSendMessage(text=weather_reply_text)
         messages_to_send.append(weather_message)
-        print(messages_to_send)
-
 
         image_url = get_random_image_url(base_url)
 
@@ -185,7 +183,7 @@ def handle_message(event):
             preview_image_url=image_url
         )
 
-        LINE_BOT_API.reply_message(event.reply_token, messages_to_send,)
+        LINE_BOT_API.reply_message(event.reply_token, image_msg, messages_to_send,)
 
 
 #仮想環境に入ってね：Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
