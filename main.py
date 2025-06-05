@@ -169,6 +169,7 @@ def handle_message(event):
 
         weather_message = TextSendMessage(text=weather_reply_text)
         messages_to_send.append(weather_message)
+        print(messages_to_send)
 
 
         image_url = get_random_image_url(base_url)
