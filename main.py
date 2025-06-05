@@ -24,6 +24,7 @@ app.mount("/images", StaticFiles(directory="images"), name="images")
 # 環境変数
 LINE_BOT_API = LineBotApi(os.environ["CHANNEL_ACCESS_TOKEN"])
 handler = WebhookHandler(os.environ["CHANNEL_SECRET"])
+base_url = os.environ.get("BASE_URL", "http://localhost:8000")
 
 # ルート確認用エンドポイント
 @app.get("/")
@@ -166,8 +167,6 @@ def handle_message(event):
             reply_text = f"今日の{target_city}の天気は{weather_info['weather']}です。最高気温は{weather_info['temperature']['max']}℃、最低気温は{weather_info['temperature']['min']}℃です。"
             
         LINE_BOT_API.reply_message(event.reply_token, TextMessage(text=reply_text))
-        
-        base_url = "https://heroine-maker-bot.onrender.com"
 
         image_url = get_random_image_url(base_url)
 
@@ -182,7 +181,7 @@ def handle_message(event):
             preview_image_url=image_url
         )
 
-        messages_to_send = [image_msg, reply, reply_text]
+        messages_to_send = [image_msg, reply, TextMessage]
         LINE_BOT_API.reply_message(event.reply_token, messages_to_send,)
 
 
