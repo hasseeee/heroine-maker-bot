@@ -152,21 +152,24 @@ def handle_message(event):
     message_text = event.message.text.lower()
 
     if message_text == "おはよう":
-        greeting_message = TextSendMessage(text="おはよう！")
         
+        messages_to_send = []
+        
+        greeting_message = TextSendMessage(text="おはよう！")
+        messages_to_send.append(greeting_message)
+
         target_city = "大阪"
         weather_info = scrape_weather_info(target_city)
 
-        reply_text = f"今日の大阪の天気は{weather_info['weather']}です。最高気温は{weather_info['temperature']['max']}℃、最低気温は{weather_info['temperature']['min']}℃です。"
-        
-        LINE_BOT_API.reply_message(event.reply_token, TextMessage(text=reply_text))
          # エラーがあった場合
         if "error" in weather_info:
-            reply_text = f"{target_city}の天気情報を取得できませんでした。"
+            weather_reply_text = f"{target_city}の天気わかんなかった。ごめん<(_ _)>"
         else:
-            reply_text = f"今日の{target_city}の天気は{weather_info['weather']}です。最高気温は{weather_info['temperature']['max']}℃、最低気温は{weather_info['temperature']['min']}℃です。"
-            
-        LINE_BOT_API.reply_message(event.reply_token, TextMessage(text=reply_text))
+            weather_reply_text = f"今日の{target_city}は{weather_info['weather']}だよ～。最高気温は{weather_info['temperature']['max']}℃、最低気温は{weather_info['temperature']['min']}℃！！"
+
+        weather_message = TextSendMessage(text=weather_reply_text)
+        messages_to_send.append(weather_message)
+
 
         image_url = get_random_image_url(base_url)
 
@@ -181,7 +184,6 @@ def handle_message(event):
             preview_image_url=image_url
         )
 
-        messages_to_send = [image_msg, greeting_message, TextMessage]
         LINE_BOT_API.reply_message(event.reply_token, messages_to_send,)
 
 
