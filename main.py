@@ -185,6 +185,7 @@ def handle_message(event):
 
         messages_to_send.append(image_msg)
 
+        print(messages_to_send)
         LINE_BOT_API.reply_message(event.reply_token, messages_to_send,)
 
 
