@@ -182,8 +182,8 @@ def handle_message(event):
             preview_image_url=image_url
         )
 
-        messages_to_send = [image_msg, reply]
-        LINE_BOT_API.reply_message(event.reply_token, messages_to_send)
+        messages_to_send = [image_msg, reply, reply_text]
+        LINE_BOT_API.reply_message(event.reply_token, messages_to_send,)
 
 
 #仮想環境に入ってね：Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
