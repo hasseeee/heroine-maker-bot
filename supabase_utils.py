@@ -50,3 +50,4 @@ def get_image_url(weather_id: int, mood_id: int) -> str | None:
     except Exception as e:
         print(f"Error getting image_url: {e}")
         return None
+    
