@@ -12,15 +12,30 @@ def init_supabase():
 supabase = init_supabase()
 
 def get_weather_id_by_name(weather_name: str) -> int | None:
-    """天気名（例：「晴れ」）から、weathersテーブルのIDを取得する"""
+    """天気名（例：「晴れ」）から、weathersテーブルのIDを取得する【デバッグ版】"""
     try:
-        # 修正点①: .select()の中を 'name' から 'weather_name' に変更
+        print(f"\n[デバッグ情報] get_weather_id_by_name が '{weather_name}' という引数で呼び出されました。")
+        
         response = supabase.table('weather').select('id, weather_name').execute()
+        
+        if not response.data:
+            print("  [デバッグ情報] データベースからデータを取得できませんでした。テーブルは空かもしれません。")
+            return None
+
+        print("  [デバッグ情報] データベース内のデータと比較を開始します...")
         for weather in response.data:
-            # 修正点②: 辞書のキーも 'name' から 'weather_name' に変更
-            if weather['weather_name'] in weather_name:
+            # 比較している2つの値を詳しく表示する
+            db_value = weather['weather_name']
+            arg_value = weather_name
+            print(f"  [比較中] DBの値: '{db_value}' ({len(db_value)}文字) <-> 引数の値: '{arg_value}' ({len(arg_value)}文字)")
+            
+            # 比較条件
+            if db_value in arg_value:
+                print(f"  [成功] 一致しました！ ID: {weather['id']} を返します。")
                 return weather['id']
-        return None # 該当なし
+
+        print("  [デバッグ情報] ループが終了しましたが、一致するデータは見つかりませんでした。")
+        return None
     except Exception as e:
         print(f"Error getting weather_id: {e}")
         return None
