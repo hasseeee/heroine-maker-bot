@@ -40,7 +40,7 @@ greet_key = random.choice(list(greeting_dict.keys()))
 
 clothing, background = weather_dict[weather_key]
 mood = feeling_key
-mood_expr = feeling_dict[mood_key]
+mood_expr = feeling_dict[feeling_key]
 greeting_action = greeting_dict[greet_key]
 
 # === プロンプト生成 ===
@@ -93,7 +93,7 @@ try:
     # Base64画像デコード
     img_data = src.split(",")[1]
     image = Image.open(io.BytesIO(base64.b64decode(img_data)))
-    filename = f"output_{weather_key}_{mood_key}_{greet_key}.png"
+    filename = f"output_{weather_key}_{feeling_key}_{greet_key}.png"
     image.save(filename)
 
     print(f"✅ 画像を保存しました: {filename}")

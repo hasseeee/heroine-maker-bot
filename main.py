@@ -107,7 +107,7 @@ def handle_message(event):
             # 天気名からweather_idを取得
             weather_id = get_weather_id_by_name(weather_info['weather'])
             # ランダムにmood_idを取得
-            feelings_id = get_random_feelings_id()
+            feelings_id = get_feelings_id()
 
             if weather_id and feelings_id:
                 # weather_idとmood_idに合う画像URLを取得
