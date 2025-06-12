@@ -14,10 +14,11 @@ supabase = init_supabase()
 def get_weather_id_by_name(weather_name: str) -> int | None:
     """天気名（例：「晴れ」）から、weathersテーブルのIDを取得する"""
     try:
-        # 天気名に部分一致するものを検索（例：「晴時々曇」でも「晴」でヒットさせるため）
-        response = supabase.table('weathers').select('id, name').execute()
+        # 修正点①: .select()の中を 'name' から 'weather_name' に変更
+        response = supabase.table('weather').select('id, weather_name').execute()
         for weather in response.data:
-            if weather['name'] in weather_name:
+            # 修正点②: 辞書のキーも 'name' から 'weather_name' に変更
+            if weather['weather_name'] in weather_name:
                 return weather['id']
         return None # 該当なし
     except Exception as e:
