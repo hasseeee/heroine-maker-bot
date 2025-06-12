@@ -24,23 +24,23 @@ def get_weather_id_by_name(weather_name: str) -> int | None:
         print(f"Error getting weather_id: {e}")
         return None
 
-def get_random_mood_id() -> int | None:
-    """moodsテーブルからランダムに気分のIDを1つ取得する"""
+def get_feelings_mood_id() -> int | None:
+    """feelingsテーブルからランダムに気分のIDを1つ取得する"""
     try:
-        response = supabase.table('moods').select('id').execute()
+        response = supabase.table('feelings').select('id').execute()
         if not response.data:
             return None
-        random_mood = random.choice(response.data)
-        return random_mood['id']
+        random_feeling = random.choice(response.data)
+        return random_feeling['id']
     except Exception as e:
-        print(f"Error getting random mood_id: {e}")
+        print(f"Error getting random feelings_id: {e}")
         return None
 
-def get_image_url(weather_id: int, mood_id: int) -> str | None:
+def get_image_url(weather_id: int, feelings_id: int) -> str | None:
     """weather_idとmood_idにマッチする画像のURLを取得する"""
     try:
         # weather_idとmood_idの両方に一致する画像を検索
-        response = supabase.table('images').select('image_url').eq('weather_id', weather_id).eq('mood_id', mood_id).execute()
+        response = supabase.table('images').select('image_url').eq('weather_id', weather_id).eq('feelings_id', feelings_id).execute()
         if not response.data:
             return None # 該当する画像がない
         

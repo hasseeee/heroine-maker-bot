@@ -11,7 +11,7 @@ from datetime import datetime
 from time_utils import get_time_zone, get_greeting_by_time_zone
 from image_utils import get_random_image_url
 from weather_scraper import scrape_weather_info 
-from supabase_utils import get_weather_id_by_name, get_random_mood_id, get_image_url
+from supabase_utils import get_weather_id_by_name, get_random_feelings_id, get_image_url
 
 load_dotenv()
 
@@ -101,17 +101,17 @@ def handle_message(event):
             LINE_BOT_API.reply_message(event.reply_token, greeting_message)
             return # 以降の画像関連処理はスキップ
 
-        # 3. 天気と気分に連動した画像メッセージ【ここからが新しい処理】
+        # 3. 天気と気分に連動した画像メッセージジ
         image_url = None
         if "error" not in weather_info:
             # 天気名からweather_idを取得
             weather_id = get_weather_id_by_name(weather_info['weather'])
             # ランダムにmood_idを取得
-            mood_id = get_random_mood_id()
+            feelings_id = get_random_feelings_id()
 
-            if weather_id and mood_id:
+            if weather_id and feelings_id:
                 # weather_idとmood_idに合う画像URLを取得
-                image_url = get_image_url(weather_id, mood_id)
+                image_url = get_image_url(weather_id, feelings_id)
 
         # 画像が見つかった場合のみ、画像メッセージを追加
         if image_url:
@@ -120,7 +120,7 @@ def handle_message(event):
                 preview_image_url=image_url
             )
             messages_to_send.append(image_msg)
-            
+
         else:
             # 画像が見つからなかった場合のメッセージ
             not_found_msg = TextSendMessage(text="ごめんね、今日の気分に合う画像が見つからなかった…")
