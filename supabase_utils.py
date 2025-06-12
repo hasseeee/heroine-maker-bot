@@ -24,14 +24,14 @@ def get_weather_id_by_name(weather_name: str) -> int | None:
         print(f"Error getting weather_id: {e}")
         return None
 
-def get_feelings_mood_id() -> int | None:
+def get_feelings_id() -> int | None:
     """feelingsテーブルからランダムに気分のIDを1つ取得する"""
     try:
         response = supabase.table('feelings').select('id').execute()
         if not response.data:
             return None
-        random_feeling = random.choice(response.data)
-        return random_feeling['id']
+        random_feelings = random.choice(response.data)
+        return random_feelings['id']
     except Exception as e:
         print(f"Error getting random feelings_id: {e}")
         return None

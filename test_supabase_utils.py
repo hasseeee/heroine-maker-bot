@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 # 変更点: get_random_mood_id -> get_feelings_mood_id に変更
 from supabase_utils import (
     get_weather_id_by_name,
-    get_feelings_mood_id,
+    get_feelings_id,
     get_image_url
 )
 
@@ -26,9 +26,9 @@ def run_tests():
     # --- 2. get_feelings_mood_id のテスト ---
     # 変更点: 関数名と説明を修正
     print("\n--- 2. ランダムなFeelingsのIDを取得する関数のテスト ---")
-    random_feeling_id = get_feelings_mood_id()
-    print(f"取得したランダムなFeelings ID: {random_feeling_id}  (期待値: 1, 2など数字)")
-    if random_feeling_id is None:
+    random_feelings_id = get_feelings_id()
+    print(f"取得したランダムなFeelings ID: {random_feelings_id}  (期待値: 1, 2など数字)")
+    if random_feelings_id is None:
         print("  => [注意] feelingsテーブルにデータがないか、接続に問題があるかもしれません。")
 
     # --- 3. get_image_url のテスト ---
@@ -38,18 +38,18 @@ def run_tests():
     # ケース3-1: 存在するIDの組み合わせ（晴れ & 元気）
     # ※あなたのDBのIDに合わせて数字を変更してください
     weather_id_ok = 1 
-    feeling_id_ok = 1 # 変数名を feeling_id_ok に変更
-    image_url_1 = get_image_url(weather_id_ok, feeling_id_ok) # 引数を変更
-    print(f"天気ID:{weather_id_ok}, Feelings ID:{feeling_id_ok} の場合...") # 説明を修正
+    feelings_id_ok = 1 # 変数名を feeling_id_ok に変更
+    image_url_1 = get_image_url(weather_id_ok, feelings_id_ok) # 引数を変更
+    print(f"天気ID:{weather_id_ok}, Feelings ID:{feelings_id_ok} の場合...") # 説明を修正
     print(f"  取得したURL: {image_url_1}  (期待値: httpから始まるURL文字列)")
     if image_url_1 is None:
         print("  => [注意] imagesテーブルにこの組み合わせのデータがないかもしれません。")
         
     # ケース3-2: 存在しないIDの組み合わせ
     weather_id_ng = 999
-    feeling_id_ng = 999
-    image_url_2 = get_image_url(weather_id_ng, feeling_id_ng) # 引数を変更
-    print(f"天気ID:{weather_id_ng}, Feelings ID:{feeling_id_ng} の場合...") # 説明を修正
+    feelings_id_ng = 999
+    image_url_2 = get_image_url(weather_id_ng, feelings_id_ng) # 引数を変更
+    print(f"天気ID:{weather_id_ng}, Feelings ID:{feelings_id_ng} の場合...") # 説明を修正
     print(f"  取得したURL: {image_url_2}  (期待値: None)")
 
     print("\n===== テスト終了 =====")
