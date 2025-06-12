@@ -53,7 +53,7 @@ def get_feelings_id() -> int | None:
         return None
 
 def get_image_url(weather_id: int, feelings_id: int) -> str | None:
-    """weather_idとmood_idにマッチする画像のURLを取得する"""
+    """weather_idとfeelings_idにマッチする画像のURLを取得する"""
     try:
         # weather_idとmood_idの両方に一致する画像を検索
         response = supabase.table('images').select('image_url').eq('weather_id', weather_id).eq('feelings_id', feelings_id).execute()

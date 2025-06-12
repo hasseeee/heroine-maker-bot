@@ -17,7 +17,7 @@ weather_dict = {
     "windy": ("hoodie and pleated skirt", "windy field with flying leaves")
 }
 
-mood_dict = {
+feeling_dict = {
     "energetic": "bright smile",
     "neutral": "soft smile",
     "sleepy": "gentle sleepy eyes",
@@ -35,12 +35,12 @@ greeting_dict = {
 
 # === ランダム選択 ===
 weather_key = random.choice(list(weather_dict.keys()))
-mood_key = random.choice(list(mood_dict.keys()))
+feeling_key = random.choice(list(feeling_dict.keys()))
 greet_key = random.choice(list(greeting_dict.keys()))
 
 clothing, background = weather_dict[weather_key]
-mood = mood_key
-mood_expr = mood_dict[mood_key]
+mood = feeling_key
+mood_expr = feeling_dict[mood_key]
 greeting_action = greeting_dict[greet_key]
 
 # === プロンプト生成 ===

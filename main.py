@@ -11,7 +11,7 @@ from datetime import datetime
 from time_utils import get_time_zone, get_greeting_by_time_zone
 from image_utils import get_random_image_url
 from weather_scraper import scrape_weather_info 
-from supabase_utils import get_weather_id_by_name, get_random_feelings_id, get_image_url
+from supabase_utils import get_weather_id_by_name, get_feelings_id, get_image_url
 
 load_dotenv()
 
