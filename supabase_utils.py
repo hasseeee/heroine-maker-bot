@@ -3,6 +3,37 @@ import psycopg
 
 def connect_db():
     """データベースに接続し、接続オブジェクトを返す"""
+
+    # ▼▼▼▼▼ ここからデバッグコードを追加 ▼▼▼▼▼
+    print("="*20)
+    print("--- データベース接続情報のデバッグ開始 ---")
+
+    # 環境変数からデータベース接続URIを取得
+    conn_str = os.environ.get("DATABASE_URL")
+
+    if conn_str:
+        print(f"プログラムが読み込んだDATABASE_URL: {conn_str}")
+        
+        # 接続文字列を分解して、より詳しく見てみる
+        try:
+            user_pass_part = conn_str.split('@')[0].split('//')[1]
+            host_part = conn_str.split('@')[1]
+            password = user_pass_part.split(':')[1]
+            
+            print(f"  [確認] ホスト名とポート: {host_part}")
+            print(f"  [確認] ユーザー名: {user_pass_part.split(':')[0]}")
+            print(f"  [確認] パスワードの文字数: {len(password)}文字")
+
+        except IndexError:
+            print("  [エラー] DATABASE_URLの形式が正しくないようです。")
+
+    else:
+        print("プログラムはDATABASE_URLを読み込めていません。Noneです。")
+
+    print("--- デバッグ終了 ---")
+    print("="*20)
+    # ▲▲▲▲▲ ここまでデバッグコードを追加 ▲▲▲▲▲
+
     try:
         # 環境変数からデータベース接続URIを取得
         conn_str = os.environ.get("DATABASE_URL")

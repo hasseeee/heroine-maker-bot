@@ -66,3 +66,5 @@ def run_tests():
 # このファイルが直接実行された時だけ、run_tests()関数を呼び出す
 if __name__ == "__main__":
     run_tests()
+
+#テスト実施コマンド:　python test_supabase_utils.py
