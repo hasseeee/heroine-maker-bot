@@ -70,7 +70,7 @@ def read_wether(date: Optional[str] = None, city: Optional[str] = None):
     return weather_info
 
 # メッセージイベントの処理
-@handler.add(MessageEvent)
+@handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message_text = event.message.text.lower()
 
@@ -92,12 +92,6 @@ def handle_message(event):
 
         weather_message = TextSendMessage(text=weather_reply_text)
         messages_to_send.append(weather_message)
-
-        if image_url is None:
-            print("エラー: 'images' ディレクトリに有効な画像ファイルが見つかりませんでした。")
-            # 画像なしでテキストメッセージのみを返信する
-            LINE_BOT_API.reply_message(event.reply_token, greeting_message)
-            return # 以降の画像関連処理はスキップ
 
         # 3. 天気と気分に連動した画像メッセージジ
         image_url = None
