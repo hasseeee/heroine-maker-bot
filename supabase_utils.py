@@ -143,3 +143,70 @@ if __name__ == '__main__':
         if feelings_id:
             image_url = get_image_url(weather_id, feelings_id)
             print(f"取得した画像URL: {image_url}")
+
+
+def get_id_by_exact_name(table_name: str, column_name: str, name: str) -> int | None:
+    """テーブル名、カラム名、名称を指定して、完全一致するIDを取得する汎用関数"""
+    conn = connect_db()
+    if not conn:
+        return None
+    
+    # SQLインジェクションを防ぐため、テーブル名とカラム名は安全な文字列か検証（簡易的）
+    if not table_name.isalnum() or not column_name.isalnum():
+        print("エラー: テーブル名またはカラム名に不正な文字が含まれています。")
+        return None
+
+    # 動的にSQLを組み立てるが、値はプレースホルダで安全に渡す
+    sql = f"SELECT id FROM {table_name} WHERE {column_name} = %s"
+    
+    try:
+        with conn.cursor() as cur:
+            cur.execute(sql, (name,))
+            result = cur.fetchone()
+            return result[0] if result else None
+    except Exception as e:
+        print(f"Error getting id from {table_name}: {e}")
+        return None
+    finally:
+        if conn:
+            conn.close()
+
+def insert_image_record(weather_name: str, feeling_name: str, image_url: str) -> bool:
+    """画像情報をデータベースに登録する"""
+    print(f"データベース登録開始: weather='{weather_name}', feeling='{feeling_name}', url='{image_url}'")
+    
+    # 1. 各名称に対応するIDを取得する
+    weather_id = get_id_by_exact_name("weather", "weather_name", weather_name)
+    feelings_id = get_id_by_exact_name("feelings", "feeling_name", feeling_name)
+
+    if not weather_id:
+        print(f"エラー: weatherテーブルに '{weather_name}' が見つかりません。")
+        return False
+    if not feelings_id:
+        print(f"エラー: feelingsテーブルに '{feeling_name}' が見つかりません。")
+        return False
+
+    # 2. データベースに接続
+    conn = connect_db()
+    if not conn:
+        return False
+
+    # 3. imagesテーブルにINSERTするSQL
+    sql = """
+        INSERT INTO images (weather_id, feelings_id, image_url, created_at) 
+        VALUES (%s, %s, %s, NOW())
+    """
+    
+    try:
+        with conn.cursor() as cur:
+            cur.execute(sql, (weather_id, feelings_id, image_url))
+            conn.commit()  # 変更を確定する
+            print("✅ データベースへの登録が成功しました。")
+            return True
+    except Exception as e:
+        conn.rollback()  # エラーが発生した場合は変更を取り消す
+        print(f"データベース登録エラー: {e}")
+        return False
+    finally:
+        if conn:
+            conn.close()
