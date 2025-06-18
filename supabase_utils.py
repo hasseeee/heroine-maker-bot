@@ -51,7 +51,7 @@ def get_weather_id_by_name(weather_name: str) -> int | None:
         return None
 
     # SQLインジェクションを防ぐため、プレースホルダ(%s)を使用
-    sql = "SELECT id FROM weather WHERE %s LIKE '%' || weather_name || '%'"
+    sql = "SELECT id FROM weather WHERE weather_name ILIKE %s"
 
     try:
         # 'with'構文でカーソルを自動的に閉じる
