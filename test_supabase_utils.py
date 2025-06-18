@@ -46,7 +46,7 @@ def run_tests():
     # ケース3-1: 存在するIDの組み合わせ（例: 晴れ & 元気）
     # ※あなたのDBのIDに合わせて数字を変更してください
     weather_id_ok = 1 
-    feelings_id_ok = 1 
+    feelings_id_ok = 2 
     image_url_1 = get_image_url(weather_id_ok, feelings_id_ok)
     print(f"天気ID:{weather_id_ok}, Feelings ID:{feelings_id_ok} の場合...")
     print(f"  取得したURL: {image_url_1}  (期待値: httpから始まるURL文字列)")
