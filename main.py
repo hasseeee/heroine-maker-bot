@@ -93,8 +93,6 @@ def handle_message(event):
         weather_message = TextSendMessage(text=weather_reply_text)
         messages_to_send.append(weather_message)
 
-        image_url = get_random_image_url(base_url)
-
         if image_url is None:
             print("エラー: 'images' ディレクトリに有効な画像ファイルが見つかりませんでした。")
             # 画像なしでテキストメッセージのみを返信する
@@ -112,6 +110,9 @@ def handle_message(event):
             if weather_id and feelings_id:
                 # weather_idとmood_idに合う画像URLを取得
                 image_url = get_image_url(weather_id, feelings_id)
+
+        if image_url is None:
+            image_url = get_random_image_url(base_url)
 
         # 画像が見つかった場合のみ、画像メッセージを追加
         if image_url:
