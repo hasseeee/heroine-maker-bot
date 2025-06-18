@@ -6,6 +6,13 @@ import time
 from PIL import Image
 import io
 import base64
+import os
+from dotenv import load_dotenv
+
+# supabase_utilsから新しい関数をインポート
+from supabase_utils import insert_image_record
+
+load_dotenv()
 
 # === 可変項目 ===
 
@@ -52,6 +59,10 @@ prompt = (
 
 print("🎯 使用プロンプト:\n", prompt)
 
+# === FastAPIのベースURLと画像保存先ディレクトリ ===
+BASE_URL = os.environ.get("BASE_URL", "http://127.0.0.1:8000") # .envから取得、なければデフォルト値
+IMAGES_DIR = "images" # FastAPIが公開するディレクトリ名
+
 # === SeleniumでWebUIにアクセス ===
 
 chrome_options = Options()
@@ -93,10 +104,27 @@ try:
     # Base64画像デコード
     img_data = src.split(",")[1]
     image = Image.open(io.BytesIO(base64.b64decode(img_data)))
+
+    # 保存先ディレクトリが存在しない場合は作成
+    if not os.path.exists(IMAGES_DIR):
+        os.makedirs(IMAGES_DIR)
+    
     filename = f"output_{weather_key}_{feeling_key}_{greet_key}.png"
+    save_path = os.path.join(IMAGES_DIR, filename)
     image.save(filename)
 
-    print(f"✅ 画像を保存しました: {filename}")
+    print(f"✅ 画像を保存しました: {save_path}")
+
+    # === ここからデータベース登録処理 ===
+    # 公開用のURLを組み立てる
+    public_image_url = f"{BASE_URL}/{IMAGES_DIR}/{filename}"
+
+    # データベースに登録
+    # feeling_key は mood と同じなので mood を使用
+    success = insert_image_record(weather_key, mood, public_image_url)
+
+    if not success:
+        print("❌ データベース登録に失敗しました。")
 
 finally:
     driver.quit()
