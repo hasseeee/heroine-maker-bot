@@ -4,12 +4,13 @@ import psycopg
 def connect_db():
     """データベースに接続し、接続オブジェクトを返す"""
 
+    
+    # 環境変数からデータベース接続URIを取得
+    conn_str = os.environ.get("DATABASE_URL")
+
     # ▼▼▼▼▼ ここからデバッグコードを追加 ▼▼▼▼▼
     print("="*20)
     print("--- データベース接続情報のデバッグ開始 ---")
-
-    # 環境変数からデータベース接続URIを取得
-    conn_str = os.environ.get("DATABASE_URL")
 
     if conn_str:
         print(f"プログラムが読み込んだDATABASE_URL: {conn_str}")
