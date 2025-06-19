@@ -50,6 +50,23 @@ mood = feeling_key
 mood_expr = feeling_dict[feeling_key]
 greeting_action = greeting_dict[greet_key]
 
+# === 英語キーと日本語（DB登録名）を紐付ける翻訳辞書 ===
+weather_en_to_jp = {
+    "sunny": "晴れ",
+    "cloudy": "曇り",
+    "rainy": "雨",
+    "snowy": "雪",
+    "windy": "風" 
+}
+
+feeling_en_to_jp = {
+    "energetic": "元気",
+    "neutral": "ふつう",
+    "sleepy": "眠い",
+    "calm": "穏やか",
+    "wistful": "物思い"
+}
+
 # === プロンプト生成 ===
 prompt = (
     f"A beautiful anime-style girl, facing the viewer and warmly greeting them with a {greeting_action}, "
