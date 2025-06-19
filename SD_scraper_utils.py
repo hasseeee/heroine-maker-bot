@@ -146,12 +146,19 @@ try:
     # 公開用のURLを組み立てる
     public_image_url = f"{BASE_URL}/{IMAGES_DIR}/{filename}"
 
+    # 翻訳辞書を使って、DB登録用の日本語名を取得
+    weather_jp_name = weather_en_to_jp.get(weather_key)
+    feeling_jp_name = feeling_en_to_jp.get(feeling_key)
+
+    if weather_jp_name and feeling_jp_name:
     # データベースに登録
     # feeling_key は mood と同じなので mood を使用
-    success = insert_image_record(weather_key, mood, public_image_url)
+        success = insert_image_record(weather_key, mood, public_image_url)
+        if not success:
+            print("❌ データベース登録に失敗しました。")
+    else:
+        print("❌ 翻訳辞書にキーが見つからなかったため、DB登録をスキップしました。")
 
-    if not success:
-        print("❌ データベース登録に失敗しました。")
 
 finally:
     driver.quit()
