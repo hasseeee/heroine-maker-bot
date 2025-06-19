@@ -67,6 +67,16 @@ feeling_en_to_jp = {
     "wistful": "物思い"
 }
 
+# === ランダム選択 ===
+weather_key = random.choice(list(weather_dict.keys()))
+feeling_key = random.choice(list(feeling_dict.keys()))
+greet_key = random.choice(list(greeting_dict.keys()))
+
+clothing, background = weather_dict[weather_key]
+mood = feeling_key # moodは英語キーのままプロンプト生成に使用
+mood_expr = feeling_dict[feeling_key]
+greeting_action = greeting_dict[greet_key]
+
 # === プロンプト生成 ===
 prompt = (
     f"A beautiful anime-style girl, facing the viewer and warmly greeting them with a {greeting_action}, "
