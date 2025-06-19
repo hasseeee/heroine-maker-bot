@@ -2,6 +2,8 @@ import random
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 from PIL import Image
 import io
@@ -100,8 +102,14 @@ driver = webdriver.Chrome(options=chrome_options)
 try:
     driver.get("http://127.0.0.1:7860")  # Stable Diffusion WebUI
 
-    # ページ読み込み待ち
-    time.sleep(5)
+    # ▼▼▼ time.sleep(5) をより確実な待機方法に変更 ▼▼▼
+    print("🖥️ Stable Diffusion Web UIのページ読み込みを待っています...")
+    
+    # 最大30秒間、プロンプト入力欄が表示されるまで待機する
+    wait = WebDriverWait(driver, 30)
+    prompt_box = wait.until(EC.presence_of_element_located((By.XPATH, '//textarea[@id="txt2img_prompt"]')))
+    
+    print("✅ プロンプト入力欄を発見しました。")
 
     # プロンプト入力
     prompt_box = driver.find_element(By.XPATH, '//textarea[@id="txt2img_prompt"]')
