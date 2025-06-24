@@ -107,12 +107,12 @@ try:
     
     # 最大30秒間、プロンプト入力欄が表示されるまで待機する
     wait = WebDriverWait(driver, 30)
-    prompt_box = wait.until(EC.presence_of_element_located((By.XPATH, '//textarea[@id="txt2img_prompt"]')))
+    prompt_box = wait.until(EC.presence_of_element_located((By.XPATH, '//textarea[@data-testid="textbox"]')))
     
     print("✅ プロンプト入力欄を発見しました。")
 
     # プロンプト入力
-    prompt_box = driver.find_element(By.XPATH, '//textarea[@id="txt2img_prompt"]')
+    prompt_box = driver.find_element(By.XPATH, '//textarea[@data-testid="textbox"]')
     prompt_box.clear()
     prompt_box.send_keys(prompt)
 
