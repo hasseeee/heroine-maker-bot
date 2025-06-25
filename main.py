@@ -11,7 +11,7 @@ from datetime import datetime
 from time_utils import get_time_zone, get_greeting_by_time_zone
 from image_utils import get_random_image_url
 from weather_scraper import scrape_weather_info 
-from supabase_utils import get_weather_id_by_name, get_feelings_id, get_image_url
+from supabase_utils import get_or_create_weather_id_by_name, get_feelings_id, get_image_url, insert_weather
 
 load_dotenv()
 
@@ -103,7 +103,7 @@ def handle_message(event):
         image_url = None
         if "error" not in weather_info:
             # 天気名からweather_idを取得
-            weather_id = get_weather_id_by_name(weather_info['weather'])
+            weather_id = get_or_create_weather_id_by_name(weather_info['weather'])
             # ランダムにmood_idを取得
             feelings_id = get_feelings_id()
 

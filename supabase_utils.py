@@ -77,7 +77,7 @@ def insert_weather(weather_name: str) -> int | None:
             conn.close()
 
 
-def get_weather_id_by_name(weather_name: str) -> int | None:
+def get_or_create_weather_id_by_name(weather_name: str) -> int | None:
     """天気名を含むレコードのIDをSQLで直接取得する"""
     conn = connect_db()
     if not conn:
@@ -172,7 +172,7 @@ if __name__ == '__main__':
     # load_dotenv()
     
     current_weather_text = "今日は曇りのち晴れでしょう"
-    weather_id = get_weather_id_by_name(current_weather_text)
+    weather_id = get_or_create_weather_id_by_name(current_weather_text)
     print(f"天気テキスト: '{current_weather_text}'")
     print(f"取得した天気ID: {weather_id}")
 
