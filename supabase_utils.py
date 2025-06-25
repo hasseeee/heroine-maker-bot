@@ -94,9 +94,19 @@ def get_weather_id_by_name(weather_name: str) -> int | None:
             # 結果を1件だけ取得
             result = cur.fetchone() 
             
+            # もしIDが見つかれば、そのIDを返す
             if result:
+                print(f"既存の天気 '{weather_name}' (ID: {result[0]}) を見つけました。")
                 return result[0] # 結果はタプル (値,) で返るので、最初の要素を取得
-            return None
+
+            # 見つからなかった場合
+            else:
+                print(f"既存の天気に '{weather_name}' が見つかりませんでした。")
+                # この後の finally で接続が閉じてしまうので、ここで一度接続を閉じる
+                conn.close()
+                # 新しく天気を追加して、そのIDを返す
+                return insert_weather(weather_name)
+                
     except Exception as e:
         print(f"Error getting weather_id: {e}")
         return None
