@@ -161,7 +161,7 @@ try:
     if weather_jp_name and feeling_jp_name:
     # データベースに登録
     # feeling_key は mood と同じなので mood を使用
-        success = insert_image_record(weather_key, mood, public_image_url)
+        success = insert_image_record(weather_jp_name, feeling_jp_name, public_image_url)
         if not success:
             print("❌ データベース登録に失敗しました。")
     else:
