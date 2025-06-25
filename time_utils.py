@@ -15,7 +15,7 @@ def get_time_zone():
         return "朝"
     elif 9 <= hour < 17:
         return "昼"
-    elif 17 <= hour < 19:
+    elif 17 <= hour < 21:
         return "夕方"
     else:
         return "夜"
