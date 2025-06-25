@@ -48,6 +48,35 @@ def connect_db():
         print(f"データベース接続エラー: {e}")
         return None
 
+def insert_weather(weather_name: str) -> int | None:
+    """
+    新しい天気をweatherテーブルに追加し、その新しいIDを返す
+    """
+    print(f"データベースに新しい天気 '{weather_name}' を追加します。")
+    conn = connect_db()
+    if not conn:
+        return None
+
+    # RETURNING id を使うことで、INSERTと同時に新しく作られたIDを取得できる
+    sql = "INSERT INTO weather (weather_name) VALUES (%s) RETURNING id"
+    
+    try:
+        with conn.cursor() as cur:
+            # executeの戻り値として新しいIDを受け取る
+            cur.execute(sql, (weather_name,))
+            new_id = cur.fetchone()[0]
+            conn.commit()  # 変更を確定
+            print(f"✅ 新しい天気ID: {new_id} として登録しました。")
+            return new_id
+    except Exception as e:
+        conn.rollback()  # エラー時は変更を取り消す
+        print(f"天気追加エラー: {e}")
+        return None
+    finally:
+        if conn:
+            conn.close()
+
+
 def get_weather_id_by_name(weather_name: str) -> int | None:
     """天気名を含むレコードのIDをSQLで直接取得する"""
     conn = connect_db()
