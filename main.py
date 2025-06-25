@@ -78,7 +78,13 @@ def handle_message(event):
         
         messages_to_send = []
         
-        greeting_message = TextSendMessage(text="おはよう！")
+        #現在時間を取得
+        time_zone = get_time_zone()
+        #時間帯にマッチした挨拶を取得
+        greeting_text = get_greeting_by_time_zone(time_zone)
+        #取得した挨拶でメッセージ作成
+        greeting_message = TextMessage(text=greeting_text)
+
         messages_to_send.append(greeting_message)
 
         target_city = "大阪"
