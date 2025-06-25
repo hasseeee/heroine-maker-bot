@@ -3,7 +3,7 @@ import pytz
 
 #日本時間の取得
 def get_current_japan_time():
-    jst = pytz.timezone('Asia/Osaka')
+    jst = pytz.timezone('Asia/Tokyo')
     return datetime.now(jst)
 
 #時間帯の分類
