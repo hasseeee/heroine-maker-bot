@@ -123,19 +123,15 @@ try:
     print("🎨 画像生成中...")
 
     # 画像が表示されるまで待機
-    timeout = 120
-    while timeout > 0:
-        try:
-            img_element_xpath = driver.find_element(By.XPATH, '//div[@id="txt2img_gallery"]//img')
-            img_element = wait.until(EC.presence_of_element_located((By.XPATH, img_element_xpath)))
-            src = img_element.get_attribute("src")
-            if src.startswith("data:image/png;base64,"):
-                print("✅ 画像取得成功")
-                break
-        except:
-            pass
-        time.sleep(1)
-        timeout -= 1
+    wait = WebDriverWait(driver, 120) 
+    
+    img_element_xpath = '//div[@id="txt2img_gallery"]//img'
+    img_element = wait.until(EC.presence_of_element_located((By.XPATH, img_element_xpath)))
+
+    wait.until(EC.attribute_starts_with((By.XPATH, img_element_xpath), "src", "data:image/png;base64,"))
+
+    src = img_element.get_attribute("src")
+    print("✅ 画像取得成功")
 
     # Base64画像デコード
     img_data = src.split(",")[1]
