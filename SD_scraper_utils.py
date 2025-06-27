@@ -128,7 +128,7 @@ try:
     img_element_xpath = '//div[@id="txt2img_gallery"]//img'
     img_element = wait.until(EC.presence_of_element_located((By.XPATH, img_element_xpath)))
 
-    wait.until(EC.attribute_starts_with((By.XPATH, img_element_xpath), "src", "data:image/png;base64,"))
+    wait.until(lambda d: d.find_element(By.XPATH, img_element_xpath).get_attribute("src").startswith("data:image/png;base64,"))
 
     src = img_element.get_attribute("src")
     print("✅ 画像取得成功")
