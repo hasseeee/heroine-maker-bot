@@ -117,7 +117,7 @@ try:
     prompt_box.send_keys(prompt)
 
     # Generateボタンクリック
-    generate_btn = driver.find_element(By.XPATH, '//button[contains(text(), "Generate")]')
+    generate_btn = driver.find_element(By.XPATH, '//button[@id="txt2img_generate"]')
     generate_btn.click()
 
     print("🎨 画像生成中...")
