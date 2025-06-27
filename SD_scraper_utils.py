@@ -62,6 +62,7 @@ weather_en_to_jp = {
 }
 
 feeling_en_to_jp = {
+    "lively": "元気いっぱい",
     "energetic": "元気",
     "neutral": "ふつう",
     "sleepy": "眠い",
