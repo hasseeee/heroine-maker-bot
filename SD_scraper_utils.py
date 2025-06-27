@@ -107,19 +107,17 @@ try:
     
     # 最大30秒間、プロンプト入力欄が表示されるまで待機する
     wait = WebDriverWait(driver, 30)
-    prompt_box = wait.until(EC.presence_of_element_located((By.XPATH, '//textarea[@data-testid="textbox"]')))
     
+    prompt_box = wait.until(EC.presence_of_element_located((By.XPATH, '//textarea[@data-testid="textbox"]')))
     print("✅ プロンプト入力欄を発見しました。")
 
     # プロンプト入力
-    prompt_box = driver.find_element(By.XPATH, '//textarea[@data-testid="textbox"]')
     prompt_box.clear()
     prompt_box.send_keys(prompt)
 
     # Generateボタンクリック
     generate_btn = driver.find_element(By.XPATH, '//button[@id="txt2img_generate"]')
     generate_btn.click()
-
     print("🎨 画像生成中...")
 
     # 画像が表示されるまで待機
@@ -145,7 +143,7 @@ try:
     timestamp = int(time.time())
     filename = f"heroine_{weather_key}_{feeling_key}_{timestamp}.png"
     save_path = os.path.join(SAVE_DIRECTORY, filename)
-    image.save(filename)
+    image.save(save_path)
 
     print(f"✅ 画像を保存しました: {save_path}")
 
