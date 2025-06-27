@@ -84,7 +84,7 @@ def get_or_create_weather_id(weather_name: str) -> int | None:
         return None
 
     # SQLインジェクションを防ぐため、プレースホルダ(%s)を使用
-    sql = "SELECT id FROM weather WHERE weather_name ILIKE %s"
+    sql = "SELECT id FROM weather WHERE weather_name = %s"
 
     try:
         # 'with'構文でカーソルを自動的に閉じる
@@ -111,8 +111,9 @@ def get_or_create_weather_id(weather_name: str) -> int | None:
         print(f"Error getting weather_id: {e}")
         return None
     finally:
-        # 最後に必ず接続を閉じる
-        conn.close()
+        # 接続がまだ開いている場合のみ閉じる
+        if conn and not conn.closed:
+            conn.close()
 
 
 def get_feelings_id() -> int | None:
@@ -220,7 +221,7 @@ def insert_image_record(weather_name: str, feelings_name: str, image_url: str) -
     
     # 1. 各名称に対応するIDを取得する
     weather_id = get_id_by_exact_name("weather", "weather_name", weather_name)
-    feelings_id = get_id_by_exact_name("feelings", "feeling_name", feelings_name)
+    feelings_id = get_id_by_exact_name("feelings", "feelings_name", feelings_name)
 
     if not weather_id:
         print(f"エラー: weatherテーブルに '{weather_name}' が見つかりません。")
