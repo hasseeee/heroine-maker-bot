@@ -90,7 +90,7 @@ print("🎯 使用プロンプト:\n", prompt)
 
 # === FastAPIのベースURLと画像保存先ディレクトリ ===
 BASE_URL = os.environ.get("BASE_URL", "http://127.0.0.1:8000") # .envから取得、なければデフォルト値
-IMAGES_DIR = "images" # FastAPIが公開するディレクトリ名
+SAVE_DIRECTORY = r"D:\products\heroine-maker-bot\generate_images" 
 
 # === SeleniumでWebUIにアクセス ===
 
@@ -138,18 +138,20 @@ try:
     image = Image.open(io.BytesIO(base64.b64decode(img_data)))
 
     # 保存先ディレクトリが存在しない場合は作成
-    if not os.path.exists(IMAGES_DIR):
-        os.makedirs(IMAGES_DIR)
+    if not os.path.exists(SAVE_DIRECTORY):
+        os.makedirs(SAVE_DIRECTORY)
     
-    filename = f"output_{weather_key}_{feeling_key}_{greet_key}.png"
-    save_path = os.path.join(IMAGES_DIR, filename)
+    # ファイル名を作成（タイムスタンプでダブりを防ぐ）
+    timestamp = int(time.time())
+    filename = f"heroine_{weather_key}_{feeling_key}_{timestamp}.png"
+    save_path = os.path.join(SAVE_DIRECTORY, filename)
     image.save(filename)
 
     print(f"✅ 画像を保存しました: {save_path}")
 
     # === ここからデータベース登録処理 ===
     # 公開用のURLを組み立てる
-    public_image_url = f"{BASE_URL}/{IMAGES_DIR}/{filename}"
+    public_image_url = f"{BASE_URL}/{SAVE_DIRECTORY}/{filename}"
 
     # 翻訳辞書を使って、DB登録用の日本語名を取得
     weather_jp_name = weather_en_to_jp.get(weather_key)
