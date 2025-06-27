@@ -191,7 +191,11 @@ def get_id_by_exact_name(table_name: str, column_name: str, name: str) -> int | 
         return None
     
     # SQLインジェクションを防ぐため、テーブル名とカラム名は安全な文字列か検証（簡易的）
-    if not table_name.isalnum() or not column_name.isalnum():
+    def is_safe_name(s: str) -> bool:
+        # 文字が英数字またはアンダースコアのみで構成されているかチェック
+        return all(c.isalnum() or c == '_' for c in s)
+
+    if not is_safe_name(table_name) or not is_safe_name(column_name):
         print("エラー: テーブル名またはカラム名に不正な文字が含まれています。")
         return None
 
