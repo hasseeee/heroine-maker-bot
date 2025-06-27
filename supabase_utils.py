@@ -228,3 +228,52 @@ def insert_image_record(weather_name: str, feelings_name: str, image_url: str, p
     finally:
         if conn:
             conn.close()
+            
+def get_image_url_for_bot(weather_name: str) -> tuple[str | None, int | None, int | None]:
+    """
+    天気名をもとに、必要なIDを全て取得・作成し、最終的な画像URLを返す
+    一度の接続で全ての処理を完結させるための専用関数
+    戻り値: (画像URL, 天気ID, 気分ID)
+    """
+    conn = None
+    try:
+        conn = connect_db()
+        if not conn:
+            return None, None, None
+
+        with conn.cursor() as cur:
+            # 1. 天気IDを取得、なければ作成
+            weather_id = None
+            sql_weather = "SELECT id FROM weather WHERE TRIM(weather_name) = %s"
+            cur.execute(sql_weather, (weather_name,))
+            result_weather = cur.fetchone()
+            if result_weather:
+                weather_id = result_weather[0]
+            else:
+                sql_insert_weather = "INSERT INTO weather (weather_name) VALUES (%s) RETURNING id"
+                cur.execute(sql_insert_weather, (weather_name,))
+                weather_id = cur.fetchone()[0]
+                conn.commit()
+
+            # 2. ランダムな気分IDを取得
+            sql_feelings = "SELECT id FROM feelings ORDER BY RANDOM() LIMIT 1"
+            cur.execute(sql_feelings)
+            result_feelings = cur.fetchone()
+            feelings_id = result_feelings[0] if result_feelings else None
+
+            # 3. 取得したIDを使って画像URLを取得
+            image_url = None
+            if weather_id and feelings_id:
+                sql_image = "SELECT image_url FROM images WHERE weather_id = %s AND feelings_id = %s ORDER BY RANDOM() LIMIT 1"
+                cur.execute(sql_image, (weather_id, feelings_id))
+                result_image = cur.fetchone()
+                image_url = result_image[0] if result_image else None
+            
+            return image_url, weather_id, feelings_id
+
+    except Exception as e:
+        if conn: conn.rollback()
+        print(f"Error in get_image_url_for_bot: {e}")
+        return None, None, None
+    finally:
+        if conn: conn.close()
