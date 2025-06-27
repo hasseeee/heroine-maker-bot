@@ -212,7 +212,7 @@ def insert_image_record(weather_name: str, feelings_name: str, image_url: str) -
     # 3. imagesテーブルにINSERTするSQL
     sql = """
         INSERT INTO images (weather_id, feelings_id, image_url) 
-        VALUES (%s, %s, %s, NOW())
+        VALUES (%s, %s, %s)
     """
     
     try:
