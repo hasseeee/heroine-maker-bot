@@ -189,7 +189,7 @@ def get_id_by_exact_name(table_name: str, column_name: str, name: str) -> int | 
         if conn:
             conn.close()
 
-def insert_image_record(weather_name: str, feelings_name: str, image_url: str) -> bool:
+def insert_image_record(weather_name: str, feelings_name: str, image_url: str, prompt: str) -> bool:
     """画像情報をデータベースに登録する"""
     print(f"データベース登録開始: weather='{weather_name}', feeling='{feelings_name}', url='{image_url}'")
     
@@ -211,13 +211,13 @@ def insert_image_record(weather_name: str, feelings_name: str, image_url: str) -
 
     # 3. imagesテーブルにINSERTするSQL
     sql = """
-        INSERT INTO images (weather_id, feelings_id, image_url) 
-        VALUES (%s, %s, %s)
+        INSERT INTO images (weather_id, feelings_id, prompt, image_url) 
+        VALUES (%s, %s, %s, %s)
     """
     
     try:
         with conn.cursor() as cur:
-            cur.execute(sql, (weather_id, feelings_id, image_url))
+            cur.execute(sql, (weather_id, feelings_id, prompt, image_url))
             conn.commit()  # 変更を確定する
             print("✅ データベースへの登録が成功しました。")
             return True
