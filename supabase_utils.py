@@ -48,35 +48,6 @@ def connect_db():
         print(f"データベース接続エラー: {e}")
         return None
 
-def insert_weather(weather_name: str) -> int | None:
-    """
-    新しい天気をweatherテーブルに追加し、その新しいIDを返す
-    """
-    print(f"データベースに新しい天気 '{weather_name}' を追加します。")
-    conn = connect_db()
-    if not conn:
-        return None
-
-    # RETURNING id を使うことで、INSERTと同時に新しく作られたIDを取得できる
-    sql = "INSERT INTO weather (weather_name) VALUES (%s) RETURNING id"
-    
-    try:
-        with conn.cursor() as cur:
-            # executeの戻り値として新しいIDを受け取る
-            cur.execute(sql, (weather_name,))
-            new_id = cur.fetchone()[0]
-            conn.commit()  # 変更を確定
-            print(f"✅ 新しい天気ID: {new_id} として登録しました。")
-            return new_id
-    except Exception as e:
-        conn.rollback()  # エラー時は変更を取り消す
-        print(f"天気追加エラー: {e}")
-        return None
-    finally:
-        if conn:
-            conn.close()
-
-
 def get_or_create_weather_id(weather_name: str) -> int | None:
     """天気名を含むレコードのIDをSQLで直接取得する"""
     conn = connect_db()
@@ -101,18 +72,21 @@ def get_or_create_weather_id(weather_name: str) -> int | None:
 
             # 見つからなかった場合
             else:
-                print(f"既存の天気に '{weather_name}' が見つかりませんでした。")
-                # この後の finally で接続が閉じてしまうので、ここで一度接続を閉じる
-                conn.close()
-                # 新しく天気を追加して、そのIDを返す
-                return insert_weather(weather_name)
+                print(f"既存の天気に '{weather_name}' が見つかりませんでした。追加します。")
+                sql_insert = "INSERT INTO weather (weather_name) VALUES (%s) RETURNING id"
+                cur.execute(sql_insert, (weather_name,))
+                new_id = cur.fetchone()[0]
+                conn.commit()  # ここで変更を確定
+                print(f"✅ 新しい天気ID: {new_id} として登録しました。")
+                return new_id
                 
     except Exception as e:
-        print(f"Error getting weather_id: {e}")
+        if conn:
+            conn.rollback() # エラーが起きたら変更を取り消す
+        print(f"Error in get_or_create_weather_id: {e}")
         return None
     finally:
-        # 接続がまだ開いている場合のみ閉じる
-        if conn and not conn.closed:
+        if conn:
             conn.close()
 
 
