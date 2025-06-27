@@ -26,7 +26,7 @@ weather_dict = {
     "windy": ("hoodie and pleated skirt", "windy field with flying leaves")
 }
 
-feeling_dict = {
+feelings_dict = {
     "energetic": "bright smile",
     "neutral": "soft smile",
     "sleepy": "gentle sleepy eyes",
@@ -44,12 +44,12 @@ greeting_dict = {
 
 # === ランダム選択 ===
 weather_key = random.choice(list(weather_dict.keys()))
-feeling_key = random.choice(list(feeling_dict.keys()))
+feeling_key = random.choice(list(feelings_dict.keys()))
 greet_key = random.choice(list(greeting_dict.keys()))
 
 clothing, background = weather_dict[weather_key]
 mood = feeling_key
-mood_expr = feeling_dict[feeling_key]
+mood_expr = feelings_dict[feeling_key]
 greeting_action = greeting_dict[greet_key]
 
 # === 英語キーと日本語（DB登録名）を紐付ける翻訳辞書 ===
@@ -71,12 +71,12 @@ feeling_en_to_jp = {
 
 # === ランダム選択 ===
 weather_key = random.choice(list(weather_dict.keys()))
-feeling_key = random.choice(list(feeling_dict.keys()))
+feeling_key = random.choice(list(feelings_dict.keys()))
 greet_key = random.choice(list(greeting_dict.keys()))
 
 clothing, background = weather_dict[weather_key]
 mood = feeling_key # moodは英語キーのままプロンプト生成に使用
-mood_expr = feeling_dict[feeling_key]
+mood_expr = feelings_dict[feeling_key]
 greeting_action = greeting_dict[greet_key]
 
 # === プロンプト生成 ===
@@ -163,7 +163,6 @@ try:
             print("❌ データベース登録に失敗しました。")
     else:
         print("❌ 翻訳辞書にキーが見つからなかったため、DB登録をスキップしました。")
-
 
 finally:
     driver.quit()

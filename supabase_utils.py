@@ -214,19 +214,19 @@ def get_id_by_exact_name(table_name: str, column_name: str, name: str) -> int | 
         if conn:
             conn.close()
 
-def insert_image_record(weather_name: str, feeling_name: str, image_url: str) -> bool:
+def insert_image_record(weather_name: str, feelings_name: str, image_url: str) -> bool:
     """画像情報をデータベースに登録する"""
-    print(f"データベース登録開始: weather='{weather_name}', feeling='{feeling_name}', url='{image_url}'")
+    print(f"データベース登録開始: weather='{weather_name}', feeling='{feelings_name}', url='{image_url}'")
     
     # 1. 各名称に対応するIDを取得する
     weather_id = get_id_by_exact_name("weather", "weather_name", weather_name)
-    feelings_id = get_id_by_exact_name("feelings", "feeling_name", feeling_name)
+    feelings_id = get_id_by_exact_name("feelings", "feeling_name", feelings_name)
 
     if not weather_id:
         print(f"エラー: weatherテーブルに '{weather_name}' が見つかりません。")
         return False
     if not feelings_id:
-        print(f"エラー: feelingsテーブルに '{feeling_name}' が見つかりません。")
+        print(f"エラー: feelingsテーブルに '{feelings_name}' が見つかりません。")
         return False
 
     # 2. データベースに接続
