@@ -54,7 +54,7 @@ greeting_action = greeting_dict[greet_key]
 
 # === 英語キーと日本語（DB登録名）を紐付ける翻訳辞書 ===
 weather_en_to_jp = {
-    "sunny": "晴れ",
+    "sunny": "晴",
     "cloudy": "曇り",
     "rainy": "雨",
     "snowy": "雪",
