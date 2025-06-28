@@ -102,7 +102,7 @@ def handle_message(event):
         image_url = None
         if "error" not in weather_info:
             # 天気名からweather_idを取得
-            weather_id, feelings_id, image_url = get_image_url_for_bot(weather_info['weather'])
+            image_url, weather_id, feelings_id = get_image_url_for_bot(weather_info['weather'])
 
             # デバッグ用に、取得したIDを表示してみる
             if weather_id and feelings_id:
