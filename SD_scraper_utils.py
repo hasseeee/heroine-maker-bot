@@ -91,7 +91,7 @@ print("🎯 使用プロンプト:\n", prompt)
 
 # === FastAPIのベースURLと画像保存先ディレクトリ ===
 BASE_URL = os.environ.get("BASE_URL", "http://127.0.0.1:8000") # .envから取得、なければデフォルト値
-SAVE_DIRECTORY = r"D:\products\heroine-maker-bot\generate_images" 
+SAVE_DIRECTORY = "generate_images" 
 
 # === SeleniumでWebUIにアクセス ===
 
@@ -159,7 +159,7 @@ try:
     if weather_jp_name and feeling_jp_name:
     # データベースに登録
     # feeling_key は mood と同じなので mood を使用
-        success = insert_image_record(weather_jp_name, feeling_jp_name, prompt, public_image_url)
+        success = insert_image_record(weather_jp_name, feeling_jp_name, public_image_url, prompt)
         if not success:
             print("❌ データベース登録に失敗しました。")
     else:
