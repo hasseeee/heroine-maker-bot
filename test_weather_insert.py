@@ -11,9 +11,9 @@ def run_weather_insert_test():
     print("===== 天気IDの取得/作成機能のテストを開始します =====")
 
     # --- ケース1: 既にデータベースに存在するはずの天気でテスト ---
-    print("\n--- ケース1: 既存の天気「晴れ」でテスト ---")
-    weather_name_1 = "晴れ"
-    # 賢い担当者に「晴れ」のIDを探してもらう
+    print("\n--- ケース1: 既存の天気「晴」でテスト ---")
+    weather_name_1 = "晴"
+    # 賢い担当者に「晴」のIDを探してもらう
     weather_id_1 = get_or_create_weather_id(weather_name_1)
     
     if weather_id_1:
